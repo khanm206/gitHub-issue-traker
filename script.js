@@ -1,5 +1,6 @@
 const signIn = () => {
   const signInPage = document.getElementById(`signin-page`);
+  const otherSections = document.querySelectorAll(`.after-signin`);
   const username = document.getElementById(`username`).value;
   const password = document.getElementById(`password`).value;
   if (username.length == 0 || password.length == 0) {
@@ -8,8 +9,142 @@ const signIn = () => {
   }
   if (username === `admin` && password === `admin123`) {
     signInPage.classList.add(`hidden`);
+    otherSections.forEach((section) => {
+      section.classList.remove(`hidden`);
+    });
     return;
   } else {
     alert("Username or Password is incorrect!");
   }
 };
+
+const fetchIssue = () => {
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues`)
+    .then((res) => res.json())
+    .then((data) => loadAllIssue(data.data));
+};
+
+const loadAllIssue = (allData) => {
+  document.getElementById(`issue-number`).innerText = allData.length;
+  const allIssueContainer = document.getElementById(`all-issue-container`);
+  allIssueContainer.innerHTML = ``;
+
+  for (const data of allData) {
+    const div = document.createElement(`div`);
+    let priorityHtml = ``;
+    if (data.priority == `high`) {
+      priorityHtml = `
+      <div class="text-base text-center text-red-600 bg-red-400/30 w-fit px-4 py-1 rounded-4xl">
+                            HIGH
+                        </div>
+        `;
+    } else if (data.priority == `medium`) {
+      priorityHtml = `
+                 <div class="text-base text-center text-[#D97706]  bg-[#FFF8DB] w-fit px-4 py-1 rounded-4xl">
+                            MEDIUM
+                        </div>
+        `;
+    } else if (data.priority == `low`) {
+      priorityHtml = `
+                 <div class="text-base text-center text-[#9CA3AF]  bg-[#EEEFF2] w-fit px-4 py-1 rounded-4xl">
+                            LOW
+                        </div>
+        `;
+    }
+
+    let statusHtml = ``;
+    let statusColor = ``;
+    if (data.status == `open`) {
+      statusColor = `#00A96E`;
+      statusHtml = `
+        <img class="w-8" src="./assets/Open-Status.png">
+        `;
+    } else if (data.status == `closed`) {
+      statusColor = `#A855F7`;
+      statusHtml = `
+        <img class="w-8" src="./assets/Closed- Status .png">
+        `;
+    }
+
+    let labelHtml = ``;
+    for (const label of data.labels) {
+      if (label == `bug`) {
+        labelHtml += `
+             <div class="text-xs text-center text-red-600 border
+                        border-red-600 bg-red-400/30 w-fit px-4 py-1 rounded-4xl flex items-center gap-1"><i class="fa-solid fa-bug"></i>
+                            BUG
+                        </div>
+            `;
+      } else if (label == `help wanted`) {
+        labelHtml += `
+                 <div class="text-xs text-center text-[#D97706] border
+                        border-[#FDE68A] bg-[#FFF8DB] w-fit px-4 py-1 rounded-4xl flex items-center gap-1"><i
+                                class="fa-regular fa-life-ring"></i>
+                            HELP WANTED
+                        </div>
+                `;
+      } else if (label == `enhancement`) {
+        labelHtml += `
+        <div class="text-xs text-center text-[#00A96E] border
+                        border-[#BBF7D0] bg-[#DEFCE8] w-fit px-4 py-1 rounded-4xl flex items-center gap-1"><i class="fa-regular fa-star"></i>
+                            ENHANCEMENT
+                        </div>
+        `;
+      } else if (label == `documentation`) {
+        labelHtml += `
+    <div class="text-xs text-center text-[#2563EB] border
+        border-[#BFDBFE] bg-[#EFF6FF] w-fit px-4 py-1 rounded-4xl flex items-center gap-1">
+        <i class="fa-solid fa-book"></i>
+        DOCUMENTATION
+    </div>
+  `;
+      } else if (label == `good first issue`) {
+        labelHtml += `
+    <div class="text-xs text-center text-[#7C3AED] border
+        border-[#DDD6FE] bg-[#F5F3FF] w-fit px-4 py-1 rounded-4xl flex items-center gap-1">
+        <i class="fa-solid fa-seedling"></i>
+        GOOD FIRST ISSUE
+    </div>
+  `;
+      }
+    }
+
+    div.innerHTML = `
+            <div onclick="loadModal(${data.id})"  class="card bg-base-100 w-auto h-full shadow-sm border-t-4 border-t-[${statusColor}]">
+
+                <div class="card-body">
+                    <div class="flex justify-between">
+                       ${statusHtml}
+                       ${priorityHtml}
+                    </div>
+
+                    <h2 class="card-title text-xl mt-2">${data.title}</h2>
+                    <p class="text-[#64748B] text-base">${data.description}</p>
+
+                    <div class="flex gap-4 mt-2">
+                       ${labelHtml} 
+                    </div>
+
+                    <hr class="my-4 text-black/30">
+                    <p class="text-[#64748B] text-base">
+                        # by ${data.author}
+                        <br>
+                        ${data.createdAt}
+                    </p>
+
+                </div>
+            </div>
+  `;
+    allIssueContainer.append(div);
+  }
+};
+
+const loadModal = (id) => {
+  const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
+
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => console.log(data.data));
+};
+
+fetchIssue();
