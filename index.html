@@ -10,13 +10,17 @@
     <!-- Tailwind & daisy UI -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- CSS file-->
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-    <section id="signin-page" class="">
+    <section id="signin-page" class="hidden">
         <div class="hero bg-base-200 min-h-screen">
             <div class="">
 
@@ -61,6 +65,34 @@
             </div>
         </div>
     </section>
+
+
+    <header>
+        <nav>
+            <div class="navbar bg-base-100 shadow-sm">
+                <div class="md:flex-1">
+                    <a class="btn btn-ghost"><img class="w-12 md:w-8" src="./assets/github-logo.png" alt="Logo">
+                        <span class="hidden md:flex text-2xl">GitHub Issues
+                            Tracker</span></a>
+                </div>
+                <div class="flex gap-2">
+                    <label class="input">
+                        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
+                                stroke="currentColor">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.3-4.3"></path>
+                            </g>
+                        </svg>
+                        <input type="search" required placeholder="Search issues here..." />
+                    </label>
+                    <button class="btn btn-primary"><i class="fa-solid fa-plus"></i>
+                        <span class="md:text-lg">New
+                            Issue</span></button>
+                </div>
+            </div>
+        </nav>
+    </header>
 
 
     <script src="script.js"></script>
