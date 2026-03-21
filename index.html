@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub</title>
     <!-- Logo -->
-    <link rel="shortcut icon" href="./assets/github-logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./assets/github-logo-2.png" type="image/x-icon">
     <!-- Tailwind & daisy UI -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -16,6 +16,54 @@
 
 <body>
 
+    <section id="signin-page" class="hidden">
+        <div class="hero bg-base-200 min-h-screen">
+            <div class="mt-[20%] md:mt-0">
+
+                <div class="card bg-base-100 min-w-[520px] shrink-0 shadow-2xl mx-auto p-8">
+                    <div class="text-center">
+                        <img class="mx-auto" src="./assets/github-logo.png" alt="logo">
+                        <br>
+                        <h1 class="text-3xl font-bold">GitHub Issues Tracker</h1>
+                        <p class="text-lg text-[#64748B]">
+                            Sign in to manage your issues
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <fieldset class="fieldset">
+                            <label class="text-base">Username</label>
+                            <input id="username" type="text" class="input w-full" placeholder="Enter Username" />
+                            <label class="text-base">Password</label>
+                            <input id="password" type="password" class="input w-full" placeholder="Enter Password" />
+                            <button onclick="signIn()" class="btn btn-primary mt-4 text-lg">Sign In</button>
+                        </fieldset>
+                        <div class="flex items-center my-4">
+                            <div class="flex-1 border-t border-black/20"></div>
+                            <span class="px-2">OR</span>
+                            <div class="flex-1 border-t border-black/20"></div>
+                        </div>
+                        <div class="text-center">
+                            <h5 class="text-base text-[#64748B]">Demo Credentials:</h5>
+                            <div class="bg-[#F8FAFC] text-lg p-4 rounded-xl mt-2">
+                                <span class="font-semibold">
+                                    Username:
+                                </span>
+                                admin
+                                <br>
+                                <span class="font-semibold">
+                                    Password:
+                                </span>
+                                admin123
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script src="script.js"></script>
 </body>
 
 </html>
