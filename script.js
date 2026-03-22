@@ -18,13 +18,35 @@ const signIn = () => {
   }
 };
 
-const fetchIssue = () => {
-  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues`)
-    .then((res) => res.json())
-    .then((data) => loadAllIssue(data.data));
+const activeBtn = (id) => {
+  const allButtons = document.querySelectorAll(`.issue-btn`);
+  const clickedBtn = document.getElementById(id);
+  allButtons.forEach((btn) => {
+    btn.classList.remove(`text-white`, `bg-primary`, `border-primary"`);
+  });
+  clickedBtn.classList.add(`text-white`, `bg-primary`, `border-primary"`);
 };
 
-const loadAllIssue = (allData) => {
+const loadIssue = (id) => {
+  activeBtn(id);
+  showSpinner(true);
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues`)
+    .then((res) => res.json())
+    .then((data) => {
+      let allData = data.data;
+      if (id == `btn-all`) {
+        showIssue(allData);
+      } else if (id == `btn-open`) {
+        allData = allData.filter((data) => data.status === "open");
+        showIssue(allData);
+      } else if (id == `btn-closed`) {
+        allData = allData.filter((data) => data.status === "closed");
+        showIssue(allData);
+      }
+    });
+};
+
+const showIssue = (allData) => {
   document.getElementById(`issue-number`).innerText = allData.length;
   const allIssueContainer = document.getElementById(`all-issue-container`);
   allIssueContainer.innerHTML = ``;
@@ -137,18 +159,42 @@ const loadAllIssue = (allData) => {
   `;
     allIssueContainer.append(div);
   }
+  showSpinner(false);
 };
 
 const loadModal = (id) => {
+  showSpinner(true);
   const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
 
   fetch(url)
     .then((res) => res.json())
-    .then((data) => showModal(data.data));
+    .then((data) => showIssueModal(data.data));
 };
 
-const showModal = (data) => {
-  const issueModal = document.getElementById(`issue_modal`);
+const showIssueModal = (data) => {
+  const issueModal = document.getElementById(`issueModal`);
+
+  let priorityHtml = ``;
+  if (data.priority == `high`) {
+    priorityHtml = `
+      <div class="text-base text-center text-red-600 bg-red-400/30 w-fit px-4 py-1 rounded-4xl">
+                            HIGH
+                        </div>
+        `;
+  } else if (data.priority == `medium`) {
+    priorityHtml = `
+                 <div class="text-base text-center text-[#D97706]  bg-[#FFF8DB] w-fit px-4 py-1 rounded-4xl">
+                            MEDIUM
+                        </div>
+        `;
+  } else if (data.priority == `low`) {
+    priorityHtml = `
+                 <div class="text-base text-center text-[#9CA3AF]  bg-[#EEEFF2] w-fit px-4 py-1 rounded-4xl">
+                            LOW
+                        </div>
+        `;
+  }
+
   let labelHtml = ``;
   for (const label of data.labels) {
     if (label == `bug`) {
@@ -191,12 +237,29 @@ const showModal = (data) => {
   `;
     }
   }
+  let assigneeName = "";
+  if (data.assignee) {
+    assigneeName = data.assignee
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  } else {
+    assigneeName = "None assigned!";
+  }
+
+  let statusHtml = "";
+  if (data.status == `open`) {
+    statusHtml = `<div class="bg-[#00A96E] text-white w-fit px-2 py-1 rounded-3xl">Opned</div>`;
+  } else if (data.status == `closed`) {
+    statusHtml = `<div class="bg-[#A855F7] text-white w-fit px-2 py-1 rounded-3xl">Closed</div>`;
+  }
+
   issueModal.innerHTML = ``;
   issueModal.innerHTML = `
               <div class="modal-box">
                 <h3 class="text-2xl font-bold">${data.title}</h3>
                 <div class="flex items-center gap-2 mt-2">
-                    <div class="bg-[#00A96E] text-white w-fit px-2 py-1 rounded-3xl">Opned</div>
+                   ${statusHtml}
                     <i class="fa-solid fa-circle fa-2xs" style="color: #64748B;"></i>
                     <div>
                         Opened by ${data.author}
@@ -218,7 +281,7 @@ const showModal = (data) => {
 
                         <br>
                         <span class="text-xl font-semibold">
-                            Fahim Ahmed
+                            ${assigneeName}
                         </span>
                     </div>
                     <div class="text-center">
@@ -227,9 +290,7 @@ const showModal = (data) => {
                             Priority:
                         </span>
 
-                        <div class="text-base text-center text-red-600 bg-red-400/30 w-fit px-4 py-1 rounded-4xl">
-                            HIGH
-                        </div>
+                    ${priorityHtml}
 
                     </div>
                 </div>
@@ -241,7 +302,26 @@ const showModal = (data) => {
             </div>
   `;
 
-  issue_modal.showModal();
+  issueModal.showModal();
+  showSpinner(false);
 };
 
-fetchIssue();
+const showSpinner = (loading) => {
+  const spinner = document.getElementById(`spinner`);
+  const needLoading = document.querySelectorAll(`.need-loading`);
+
+  if (loading == true) {
+    needLoading.forEach((section) => {
+      section.classList.add(`hidden`);
+    });
+    spinner.classList.remove(`hidden`);
+  }
+  if (loading == false) {
+    spinner.classList.add(`hidden`);
+    needLoading.forEach((section) => {
+      section.classList.remove(`hidden`);
+    });
+  }
+};
+
+loadIssue(`btn-all`);

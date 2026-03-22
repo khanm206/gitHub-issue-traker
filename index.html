@@ -97,16 +97,20 @@
 
         <section class="mt-8">
             <div class="bg-white p-8 rounded-xl space-x-4">
-                <button id="btn-all"
-                    class="btn text-lg border-[#E4E4E7] text-[#64748B] hover:text-white hover:bg-primary hover:border-primary">All</button>
-                <button id="btn-open"
-                    class="btn text-lg border-[#E4E4E7] text-[#64748B] hover:text-white hover:bg-primary hover:border-primary">Open</button>
-                <button id="btn-closed"
-                    class="btn text-lg border-[#E4E4E7] text-[#64748B] hover:text-white hover:bg-primary hover:border-primary">Closed</button>
+                <button id="btn-all" onclick="loadIssue(`btn-all`)"
+                    class="issue-btn btn text-lg border-[#E4E4E7] text-[#64748B] hover:text-white hover:bg-primary hover:border-primary">All</button>
+                <button id="btn-open" onclick="loadIssue(`btn-open`)"
+                    class="issue-btn btn text-lg border-[#E4E4E7] text-[#64748B] hover:text-white hover:bg-primary hover:border-primary">Open</button>
+                <button id="btn-closed" onclick="loadIssue(`btn-closed`)"
+                    class="issue-btn btn text-lg border-[#E4E4E7] text-[#64748B] hover:text-white hover:bg-primary hover:border-primary">Closed</button>
             </div>
         </section>
 
-        <section class="mt-8">
+        <section id="spinner" class="text-center my-20 hidden">
+            <span class="loading loading-spinner loading-xl w-20"></span>
+        </section>
+
+        <section class="mt-8 need-loading">
             <div class="bg-white rounded-xl p-8 flex items-center gap-4">
                 <div class="bg-[#ECE4FF] p-2 rounded-full">
                     <img class="w-10" src="./assets/Aperture.png" alt="">
@@ -119,7 +123,7 @@
         </section>
 
         <section id="all-issue-container"
-            class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 need-loading">
 
 
         </section>
@@ -127,12 +131,13 @@
 
 
 
-        <dialog id="issue_modal" class="modal">
+        <dialog id="issueModal" class="modal">
 
         </dialog>
 
 
     </main>
+
     <footer class=" h-16"></footer>
 
     <script src="script.js"></script>
