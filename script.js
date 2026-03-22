@@ -70,14 +70,14 @@ const loadAllIssue = (allData) => {
     for (const label of data.labels) {
       if (label == `bug`) {
         labelHtml += `
-             <div class="text-xs text-center text-red-600 border
-                        border-red-600 bg-red-400/30 w-fit px-4 py-1 rounded-4xl flex items-center gap-1"><i class="fa-solid fa-bug"></i>
+             <div class="text-center text-red-600 border
+                        border-red-300 bg-red-400/30 w-fit px-4 py-1 rounded-4xl flex items-center gap-1"><i class="fa-solid fa-bug"></i>
                             BUG
                         </div>
             `;
       } else if (label == `help wanted`) {
         labelHtml += `
-                 <div class="text-xs text-center text-[#D97706] border
+                 <div class="text-center text-[#D97706] border
                         border-[#FDE68A] bg-[#FFF8DB] w-fit px-4 py-1 rounded-4xl flex items-center gap-1"><i
                                 class="fa-regular fa-life-ring"></i>
                             HELP WANTED
@@ -85,14 +85,14 @@ const loadAllIssue = (allData) => {
                 `;
       } else if (label == `enhancement`) {
         labelHtml += `
-        <div class="text-xs text-center text-[#00A96E] border
+        <div class="text-center text-[#00A96E] border
                         border-[#BBF7D0] bg-[#DEFCE8] w-fit px-4 py-1 rounded-4xl flex items-center gap-1"><i class="fa-regular fa-star"></i>
                             ENHANCEMENT
                         </div>
         `;
       } else if (label == `documentation`) {
         labelHtml += `
-    <div class="text-xs text-center text-[#2563EB] border
+    <div class="text-center text-[#2563EB] border
         border-[#BFDBFE] bg-[#EFF6FF] w-fit px-4 py-1 rounded-4xl flex items-center gap-1">
         <i class="fa-solid fa-book"></i>
         DOCUMENTATION
@@ -100,7 +100,7 @@ const loadAllIssue = (allData) => {
   `;
       } else if (label == `good first issue`) {
         labelHtml += `
-    <div class="text-xs text-center text-[#7C3AED] border
+    <div class="text-center text-[#7C3AED] border
         border-[#DDD6FE] bg-[#F5F3FF] w-fit px-4 py-1 rounded-4xl flex items-center gap-1">
         <i class="fa-solid fa-seedling"></i>
         GOOD FIRST ISSUE
@@ -121,7 +121,7 @@ const loadAllIssue = (allData) => {
                     <h2 class="card-title text-xl mt-2">${data.title}</h2>
                     <p class="text-[#64748B] text-base">${data.description}</p>
 
-                    <div class="flex gap-4 mt-2">
+                    <div class="flex gap-4 mt-2 text-xs">
                        ${labelHtml} 
                     </div>
 
@@ -129,7 +129,7 @@ const loadAllIssue = (allData) => {
                     <p class="text-[#64748B] text-base">
                         # by ${data.author}
                         <br>
-                        ${data.createdAt}
+                        ${data.createdAt.split("T")[0]}
                     </p>
 
                 </div>
@@ -144,7 +144,104 @@ const loadModal = (id) => {
 
   fetch(url)
     .then((res) => res.json())
-    .then((data) => console.log(data.data));
+    .then((data) => showModal(data.data));
+};
+
+const showModal = (data) => {
+  const issueModal = document.getElementById(`issue_modal`);
+  let labelHtml = ``;
+  for (const label of data.labels) {
+    if (label == `bug`) {
+      labelHtml += `
+             <div class="text-center text-red-600 border
+                        border-red-300 bg-red-400/30 w-fit px-4 py-1 rounded-4xl flex items-center gap-1"><i class="fa-solid fa-bug"></i>
+                            BUG
+                        </div>
+            `;
+    } else if (label == `help wanted`) {
+      labelHtml += `
+                 <div class="text-center text-[#D97706] border
+                        border-[#FDE68A] bg-[#FFF8DB] w-fit px-4 py-1 rounded-4xl flex items-center gap-1"><i
+                                class="fa-regular fa-life-ring"></i>
+                            HELP WANTED
+                        </div>
+                `;
+    } else if (label == `enhancement`) {
+      labelHtml += `
+        <div class="text-center text-[#00A96E] border
+                        border-[#BBF7D0] bg-[#DEFCE8] w-fit px-4 py-1 rounded-4xl flex items-center gap-1"><i class="fa-regular fa-star"></i>
+                            ENHANCEMENT
+                        </div>
+        `;
+    } else if (label == `documentation`) {
+      labelHtml += `
+    <div class="text-center text-[#2563EB] border
+        border-[#BFDBFE] bg-[#EFF6FF] w-fit px-4 py-1 rounded-4xl flex items-center gap-1">
+        <i class="fa-solid fa-book"></i>
+        DOCUMENTATION
+    </div>
+  `;
+    } else if (label == `good first issue`) {
+      labelHtml += `
+    <div class="text-center text-[#7C3AED] border
+        border-[#DDD6FE] bg-[#F5F3FF] w-fit px-4 py-1 rounded-4xl flex items-center gap-1">
+        <i class="fa-solid fa-seedling"></i>
+        GOOD FIRST ISSUE
+    </div>
+  `;
+    }
+  }
+  issueModal.innerHTML = ``;
+  issueModal.innerHTML = `
+              <div class="modal-box">
+                <h3 class="text-2xl font-bold">${data.title}</h3>
+                <div class="flex items-center gap-2 mt-2">
+                    <div class="bg-[#00A96E] text-white w-fit px-2 py-1 rounded-3xl">Opned</div>
+                    <i class="fa-solid fa-circle fa-2xs" style="color: #64748B;"></i>
+                    <div>
+                        Opened by ${data.author}
+                    </div>
+                    <i class="fa-solid fa-circle fa-2xs" style="color: #64748B;"></i>
+                    <div>
+                       ${data.createdAt.split("T")[0]}
+                    </div>
+                </div>
+                <div class="flex gap-4 text-xs my-6">
+                   ${labelHtml}
+                </div>
+                <p class="pb-4 text-lg">${data.description}</p>
+                <div class="bg-[#F8FAFC] flex justify-between p-6 items-center">
+                    <div>
+                        <span class="text-[#64748B] text-lg">
+                            Assignee:
+                        </span>
+
+                        <br>
+                        <span class="text-xl font-semibold">
+                            Fahim Ahmed
+                        </span>
+                    </div>
+                    <div class="text-center">
+
+                        <span class="text-[#64748B] text-lg">
+                            Priority:
+                        </span>
+
+                        <div class="text-base text-center text-red-600 bg-red-400/30 w-fit px-4 py-1 rounded-4xl">
+                            HIGH
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn btn-primary text-lg">Close</button>
+                    </form>
+                </div>
+            </div>
+  `;
+
+  issue_modal.showModal();
 };
 
 fetchIssue();
