@@ -28,13 +28,15 @@ const activeBtn = (id) => {
 };
 
 const loadIssue = (id) => {
-  activeBtn(id);
+  if (id) {
+    activeBtn(id);
+  }
   showSpinner(true);
   fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues`)
     .then((res) => res.json())
     .then((data) => {
       let allData = data.data;
-      if (id == `btn-all`) {
+      if (id == `btn-all` || id == undefined) {
         showIssue(allData);
       } else if (id == `btn-open`) {
         allData = allData.filter((data) => data.status === "open");
@@ -48,6 +50,11 @@ const loadIssue = (id) => {
 
 const showIssue = (allData) => {
   document.getElementById(`issue-number`).innerText = allData.length;
+  if (allData.length <= 1) {
+    document.getElementById(`plural-issue`).innerText = ``;
+  } else {
+    document.getElementById(`plural-issue`).innerText = `s`;
+  }
   const allIssueContainer = document.getElementById(`all-issue-container`);
   allIssueContainer.innerHTML = ``;
 
@@ -140,8 +147,8 @@ const showIssue = (allData) => {
                        ${priorityHtml}
                     </div>
 
-                    <h2 class="card-title text-xl mt-2">${data.title}</h2>
-                    <p class="text-[#64748B] text-base">${data.description}</p>
+                    <h2 class="card-title text-xl mt-2">${data.title ? data.title : `No title found!`}</h2>
+                    <p class="text-[#64748B] text-base">${data.description ? data.description : `No description found!`}</p>
 
                     <div class="flex gap-4 mt-2 text-xs">
                        ${labelHtml} 
@@ -149,9 +156,9 @@ const showIssue = (allData) => {
 
                     <hr class="my-4 text-black/30">
                     <p class="text-[#64748B] text-base">
-                        # by ${data.author}
+                        # by ${data.author ? data.author : `No author found!`}
                         <br>
-                        ${data.createdAt.split("T")[0]}
+                        ${data.createdAt ? data.createdAt.split("T")[0] : ``}
                     </p>
 
                 </div>
@@ -257,22 +264,22 @@ const showIssueModal = (data) => {
   issueModal.innerHTML = ``;
   issueModal.innerHTML = `
               <div class="modal-box">
-                <h3 class="text-2xl font-bold">${data.title}</h3>
+                <h3 class="text-2xl font-bold">${data.title ? data.title : `No title found!`}</h3>
                 <div class="md:flex items-center gap-2 mt-2">
                    ${statusHtml}
                     <i class="fa-solid fa-circle fa-2xs" style="color: #64748B;"></i>
                     <div>
-                        Opened by ${data.author}
+                        Opened by ${data.author ? data.author : `No author found!`}
                     </div>
                     <i class="fa-solid fa-circle fa-2xs" style="color: #64748B;"></i>
                     <div>
-                       ${data.createdAt.split("T")[0]}
+                       ${data.createdAt ? data.createdAt.split("T")[0] : ``}
                     </div>
                 </div>
                 <div class="flex gap-4 text-xs my-6">
                    ${labelHtml}
                 </div>
-                <p class="pb-4 text-lg">${data.description}</p>
+                <p class="pb-4 text-lg">${data.description ? data.description : `No description found!`}</p>
                 <div class="bg-[#F8FAFC] flex justify-between p-6 items-center">
                     <div>
                         <span class="text-[#64748B] text-lg">
@@ -310,25 +317,30 @@ const showSpinner = (loading) => {
   const spinner = document.getElementById(`spinner`);
   const needLoading = document.querySelectorAll(`.need-loading`);
   if (loading == true) {
-    needLoading.forEach((section) => {
-      section.classList.add(`hidden`);
+    needLoading.forEach((sec) => {
+      sec.classList.add(`hidden`);
     });
     spinner.classList.remove(`hidden`);
   }
   if (loading == false) {
     spinner.classList.add(`hidden`);
-    needLoading.forEach((section) => {
-      section.classList.remove(`hidden`);
+    needLoading.forEach((sec) => {
+      sec.classList.remove(`hidden`);
     });
   }
 };
 
 const loadSearch = () => {
+  const searchText = document.getElementById(`search`).value;
+  if (searchText.length == 0) {
+    return;
+  }
+
   const allButtons = document.querySelectorAll(`.issue-btn`);
   allButtons.forEach((btn) => {
     btn.classList.remove(`text-white`, `bg-primary`, `border-primary"`);
   });
-  const searchText = document.getElementById(`search`).value;
+
   const url = `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchText}`;
   fetch(url)
     .then((res) => res.json())
