@@ -258,7 +258,7 @@ const showIssueModal = (data) => {
   issueModal.innerHTML = `
               <div class="modal-box">
                 <h3 class="text-2xl font-bold">${data.title}</h3>
-                <div class="flex items-center gap-2 mt-2">
+                <div class="md:flex items-center gap-2 mt-2">
                    ${statusHtml}
                     <i class="fa-solid fa-circle fa-2xs" style="color: #64748B;"></i>
                     <div>
@@ -309,7 +309,6 @@ const showIssueModal = (data) => {
 const showSpinner = (loading) => {
   const spinner = document.getElementById(`spinner`);
   const needLoading = document.querySelectorAll(`.need-loading`);
-
   if (loading == true) {
     needLoading.forEach((section) => {
       section.classList.add(`hidden`);

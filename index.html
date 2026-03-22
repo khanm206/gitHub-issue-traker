@@ -75,18 +75,17 @@
                             Tracker</span></a>
                 </div>
                 <div class="flex gap-2">
-                    <label class="input">
-                        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
-                                stroke="currentColor">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.3-4.3"></path>
-                            </g>
-                        </svg>
-                        <input type="search" required placeholder="Search issues here..." />
-                    </label>
+                    <div class="join">
+                        <div>
+                            <label class="input join-item">
+
+                                <input type="search" placeholder="Search here..." />
+                            </label>
+                        </div>
+                        <button class="btn btn-primary join-item">Search</button>
+                    </div>
                     <button class="btn btn-primary"><i class="fa-solid fa-plus"></i>
-                        <span class="md:text-lg">New
+                        <span class="md:text-lg hidden md:flex">New
                             Issue</span></button>
                 </div>
             </div>
@@ -110,15 +109,20 @@
             <span class="loading loading-spinner loading-xl w-20"></span>
         </section>
 
-        <section class="mt-8 need-loading">
-            <div class="bg-white rounded-xl p-8 flex items-center gap-4">
+        <section class="mt-8 need-loading  bg-white rounded-xl p-8 md:flex items-center justify-between">
+            <div class="flex flex-row-reverse md:flex-row items-center gap-4">
                 <div class="bg-[#ECE4FF] p-2 rounded-full">
                     <img class="w-10" src="./assets/Aperture.png" alt="">
                 </div>
                 <div>
-                    <h2 class="text-2xl font-semibold"><span id="issue-number"></span> Issues</h2>
+                    <h2 class="text-lg md:text-2xl font-semibold"><span id="issue-number"></span> Issues</h2>
                     <p class="text-[#64748B] text-lg">Track and manage your project issues</p>
                 </div>
+            </div>
+
+            <div class="flex gap-4 justify-center mt-4 md:mt-0">
+                <p><i class="fa-solid fa-circle fa-2xs" style="color: #00A96E;"></i> Open</p>
+                <p><i class="fa-solid fa-circle fa-2xs" style="color: #A855F7;"></i> Closed</p>
             </div>
         </section>
 
