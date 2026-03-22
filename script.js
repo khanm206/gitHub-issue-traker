@@ -19,8 +19,8 @@ const signIn = () => {
 };
 
 const activeBtn = (id) => {
-  const allButtons = document.querySelectorAll(`.issue-btn`);
   const clickedBtn = document.getElementById(id);
+  const allButtons = document.querySelectorAll(`.issue-btn`);
   allButtons.forEach((btn) => {
     btn.classList.remove(`text-white`, `bg-primary`, `border-primary"`);
   });
@@ -321,6 +321,18 @@ const showSpinner = (loading) => {
       section.classList.remove(`hidden`);
     });
   }
+};
+
+const loadSearch = () => {
+  const allButtons = document.querySelectorAll(`.issue-btn`);
+  allButtons.forEach((btn) => {
+    btn.classList.remove(`text-white`, `bg-primary`, `border-primary"`);
+  });
+  const searchText = document.getElementById(`search`).value;
+  const url = `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchText}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => showIssue(data.data));
 };
 
 loadIssue(`btn-all`);
