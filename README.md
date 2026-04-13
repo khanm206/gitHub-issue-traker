@@ -7,7 +7,7 @@ This project demonstrates real-world API integration using the GitHub API and dy
 ---
 
 ## 🚀 Live Demo
-🌐 https://github-issue-traker.vercel.app *(update if needed)*
+🌐 https://khanm206.github.io/gitHub-issue-traker
 
 ---
 
