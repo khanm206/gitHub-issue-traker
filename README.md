@@ -13,9 +13,7 @@ This project demonstrates real-world API integration using the GitHub API and dy
 
 ## 🛠️ Tech Stack
 
-⚛️ React.js  
 🟨 JavaScript (ES6+)  
-📡 Axios (GitHub REST API integration)  
 🎨 Tailwind CSS  
 
 ---
